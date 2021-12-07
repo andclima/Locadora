@@ -238,6 +238,7 @@ public class ClienteRepository {
             if (rs.next()) {
                 if (rs.getInt("tipo") == 1) {
                     PessoaFisica novaPessoaFisica = new PessoaFisica();
+                    novaPessoaFisica.setId(rs.getLong("idCliente"));
                     novaPessoaFisica.setNome(rs.getString("nome"));
                     novaPessoaFisica.setCnh(rs.getString("cnh"));
                     novaPessoaFisica.setCpf(rs.getString("cpf"));
@@ -248,6 +249,7 @@ public class ClienteRepository {
                     cliente = novaPessoaFisica;
                 } else {
                     PessoaJuridica novaPessoaJuridica = new PessoaJuridica();
+                    novaPessoaJuridica.setId(rs.getLong("idCliente"));
                     novaPessoaJuridica.setNome(rs.getString("nome"));
                     novaPessoaJuridica.setEmail(rs.getString("email"));
                     novaPessoaJuridica.setTelefone(rs.getString("telefone"));

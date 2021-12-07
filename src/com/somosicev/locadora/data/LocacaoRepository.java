@@ -186,9 +186,9 @@ public class LocacaoRepository {
         ClienteRepository repoCliente = new ClienteRepository(conexao);
         Locacao locacao = null;
         try {
-            PreparedStatement pstm = conexao.prepareStatement("SELECT l.*, d.idLocacao iddevolucao, datadevolucao, valorlocacao, quantidadediarias quantidadediariasdevolucao " +
+            PreparedStatement pstm = conexao.prepareStatement("SELECT l.*, d.idLocacao iddevolucao, datadevolucao, valorlocacao, d.quantidadediarias quantidadediariasdevolucao " +
                                             "  FROM Locacao l LEFT JOIN Devolucao d ON l.idLocacao = d.idLocacao " +
-                                            " WHERE idLocacao = ?");
+                                            " WHERE l.idLocacao = ?");
             pstm.setLong(1, id);
             ResultSet rs = pstm.executeQuery();
             if (rs.next()) {
@@ -212,6 +212,7 @@ public class LocacaoRepository {
             pstm.close();
         }
         catch (SQLException ex) {
+            ex.printStackTrace();
             System.out.println("Erro na pesquisa de locacao por identificador.");
         }
         return locacao;

@@ -95,7 +95,9 @@ public class Locacao {
 
     @Override
     public String toString() {
-        return "Locacao [cliente=" + cliente + ", id=" + id + ", veiculo=" + veiculo + "]";
+        return "Locacao [cliente=" + cliente + ", dataLocacao=" + dataLocacao + ", devolucao=" + devolucao + ", id="
+                + id + ", quantidadeDiarias=" + quantidadeDiarias + ", situacao=" + situacao + ", valorDiaria="
+                + valorDiaria + ", veiculo=" + veiculo + "]";
     }
 
     @Override
