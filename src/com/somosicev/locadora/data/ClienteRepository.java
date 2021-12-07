@@ -181,12 +181,12 @@ public class ClienteRepository {
                 if (rs.getInt("tipo") == 1) {
                     PessoaFisica novaPessoaFisica = new PessoaFisica();
                     novaPessoaFisica.setNome(rs.getString("nome"));
-                    novaPessoaFisica.setCnh(rs.getString("cnh"));
-                    novaPessoaFisica.setCpf(rs.getString("cpf"));
                     novaPessoaFisica.setEmail(rs.getString("email"));
+                    novaPessoaFisica.setTelefone(rs.getString("telefone"));
+                    novaPessoaFisica.setCpf(rs.getString("cpf"));
                     novaPessoaFisica.setIdentidade(rs.getString("identidade"));
                     novaPessoaFisica.setOrgao(rs.getString("orgao"));
-                    novaPessoaFisica.setTelefone(rs.getString("telefone"));
+                    novaPessoaFisica.setCnh(rs.getString("cnh"));
                     lista.add(novaPessoaFisica);
                 } else {
                     PessoaJuridica novaPessoaJuridica = new PessoaJuridica();
@@ -208,6 +208,23 @@ public class ClienteRepository {
         }
         return lista;
     }
+
+    // public List<Cliente> findAllNovo() {
+    //     List<Cliente> lista = new ArrayList<>();
+    //     try {
+    //         PreparedStatement pstm = conexao.prepareStatement("SELECT idCliente FROM Cliente ORDER BY idCliente");
+    //         ResultSet rs = pstm.executeQuery();
+    //         while (rs.next()) {
+    //             lista.add(findById(rs.getLong("idCliente")));
+    //         }
+    //         rs.close();
+    //         pstm.close();
+    //     }
+    //     catch (SQLException ex) {
+    //         System.out.println("Erro na pesquisa de clientes no banco de dados.");
+    //     }
+    //     return lista;
+    // }
 
     public Cliente findById(Long id) {
         Cliente cliente = null;

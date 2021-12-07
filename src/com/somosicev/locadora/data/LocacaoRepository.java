@@ -65,7 +65,7 @@ public class LocacaoRepository {
         boolean resultado = false;
         try {
             conexao.setAutoCommit(false);
-            PreparedStatement pstm = conexao.prepareStatement("UPDATE LOCACAO SET idCliente = ?, idVeiculo = ?, dataLocacao = ?, valorDiaria = ?, quantidadeDiarias = ? WHERE idLocacao = ?");
+            PreparedStatement pstm = conexao.prepareStatement("UPDATE Locacao SET idCliente = ?, idVeiculo = ?, dataLocacao = ?, valorDiaria = ?, quantidadeDiarias = ? WHERE idLocacao = ?");
             pstm.setLong(1, locacao.getCliente().getId());
             pstm.setLong(2, locacao.getVeiculo().getId());
             pstm.setDate(3, new java.sql.Date(locacao.getDataLocacao().getTime()));
@@ -86,17 +86,31 @@ public class LocacaoRepository {
             pstm.close();
 
             if (locacao.getDevolucao() != null) {
-                pstm = conexao.prepareStatement("UPDATE DEVOLUCAO SET datadevolucao = ?, valorlocacao = ?, quantidadediarias = ? WHERE idLocacao = ?");
-                if (locacao.getDevolucao().getDataDevolucao() != null) {
-                    pstm.setDate(1, new java.sql.Date(locacao.getDevolucao().getDataDevolucao().getTime()));
+                if (!possuiaDevolucao) {
+                    pstm = conexao.prepareStatement("INSERT INTO Devolucao (idLocacao, datadevolucao, valorlocacao, quantidadediarias) VALUES (?, ?, ?, ?)");
+                    pstm.setLong(1, locacao.getId());
+                    if (locacao.getDevolucao().getDataDevolucao() != null) {
+                        pstm.setDate(2, new java.sql.Date(locacao.getDevolucao().getDataDevolucao().getTime()));
+                    } else {
+                        pstm.setDate(2, null);
+                    }
+                    pstm.setBigDecimal(3, locacao.getDevolucao().getValorLocacao());
+                    pstm.setInt(4, locacao.getDevolucao().getQuantidadeDiarias());
+                    pstm.executeUpdate();
+                    pstm.close();
                 } else {
-                    pstm.setDate(1, null);
+                    pstm = conexao.prepareStatement("UPDATE Devolucao SET datadevolucao = ?, valorlocacao = ?, quantidadediarias = ? WHERE idLocacao = ?");
+                    if (locacao.getDevolucao().getDataDevolucao() != null) {
+                        pstm.setDate(1, new java.sql.Date(locacao.getDevolucao().getDataDevolucao().getTime()));
+                    } else {
+                        pstm.setDate(1, null);
+                    }
+                    pstm.setBigDecimal(2, locacao.getDevolucao().getValorLocacao());
+                    pstm.setInt(3, locacao.getDevolucao().getQuantidadeDiarias());
+                    pstm.setLong(4, locacao.getId());
+                    pstm.executeUpdate();
+                    pstm.close();                    
                 }
-                pstm.setBigDecimal(2, locacao.getDevolucao().getValorLocacao());
-                pstm.setInt(3, locacao.getDevolucao().getQuantidadeDiarias());
-                pstm.setLong(4, locacao.getId());
-                pstm.executeUpdate();
-                pstm.close();
             } else {
                 if (possuiaDevolucao) {
                     pstm = conexao.prepareStatement("DELETE FROM Devolucao WHERE idLocacao = ?");
