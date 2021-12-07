@@ -8,15 +8,50 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.somosicev.locadora.data.ClienteRepository;
 import com.somosicev.locadora.data.Conexao;
 import com.somosicev.locadora.data.VeiculoRepository;
 import com.somosicev.locadora.model.Cliente;
+import com.somosicev.locadora.model.PessoaFisica;
+import com.somosicev.locadora.model.PessoaJuridica;
 import com.somosicev.locadora.model.Veiculo;
 
 public class AppTeste {
 
     public static void main(String[] args) {
-       testeVeiculoRepositorio();
+       testeClienteRepositorio();
+    }
+
+    public static void testeClienteRepositorio() {
+        Connection conn = Conexao.getInstance();
+        try {
+            ClienteRepository repo = new ClienteRepository(conn);
+
+            PessoaFisica novaPessoaFisica = new PessoaFisica();
+            novaPessoaFisica.setNome("João");
+            novaPessoaFisica.setCnh("BR123");
+            novaPessoaFisica.setCpf("111.222.333-44");
+            novaPessoaFisica.setEmail("joao@gmail.com");
+            novaPessoaFisica.setIdentidade("1423098");
+            novaPessoaFisica.setOrgao("SSP-PI");
+            novaPessoaFisica.setTelefone("86 99999-0989");
+            repo.add(novaPessoaFisica);
+
+            PessoaJuridica novaPessoaJuridica = new PessoaJuridica();
+            novaPessoaJuridica.setNome("iCev");
+            novaPessoaJuridica.setEmail("contato@somosicev.com");
+            novaPessoaJuridica.setTelefone("86 3131-3131");
+            novaPessoaJuridica.setCnpj("12.345.678/0001-90");
+            novaPessoaJuridica.setInscricaoEstadual("9182910");
+            novaPessoaJuridica.setNomeResponsavel("Fábbio");
+            novaPessoaJuridica.setCnhResponsavel("123654");
+            repo.add(novaPessoaJuridica);
+
+            conn.close();
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public static void testeVeiculoRepositorio() {
@@ -76,25 +111,25 @@ public class AppTeste {
 
     }
 
-    public static void testeLista() {
-        List<Cliente> lista = new ArrayList<>();
-        lista.add(new Cliente(1l, "Fulano", "fulano@gmail.com", "(86) 1234-5678"));
-        lista.add(new Cliente(2l, "Beltrano", "beltrano@gmail.com", "(86) 4321-5678"));
-        lista.add(new Cliente(3l, "Sicrano", "sicrano@gmail.com", "(86) 1234-8765"));
+    // public static void testeLista() {
+    //     List<Cliente> lista = new ArrayList<>();
+    //     lista.add(new Cliente(1l, "Fulano", "fulano@gmail.com", "(86) 1234-5678"));
+    //     lista.add(new Cliente(2l, "Beltrano", "beltrano@gmail.com", "(86) 4321-5678"));
+    //     lista.add(new Cliente(3l, "Sicrano", "sicrano@gmail.com", "(86) 1234-8765"));
 
-        Cliente novo = new Cliente(4l, "Beltrano", "beltrano@gmail.com", "(86) 4321-5678");
-        if (lista.contains(novo)) {
-            System.out.println("Este cliente já existe na lista!");
-        } else {
-            lista.add(novo);
-            System.out.println("Cliente adicionado com sucesso!");
-        }
+    //     Cliente novo = new Cliente(4l, "Beltrano", "beltrano@gmail.com", "(86) 4321-5678");
+    //     if (lista.contains(novo)) {
+    //         System.out.println("Este cliente já existe na lista!");
+    //     } else {
+    //         lista.add(novo);
+    //         System.out.println("Cliente adicionado com sucesso!");
+    //     }
 
-        System.out.println("Lista de Clientes: ");
-        for (Cliente registro:lista) {
-            System.out.println(registro + " -> hashcode: " + registro.hashCode());
-        }
-    }
+    //     System.out.println("Lista de Clientes: ");
+    //     for (Cliente registro:lista) {
+    //         System.out.println(registro + " -> hashcode: " + registro.hashCode());
+    //     }
+    // }
 
     public static void testeConexao() {
         Connection conexao = Conexao.getInstance();

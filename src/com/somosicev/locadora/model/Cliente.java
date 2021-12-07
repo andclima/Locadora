@@ -1,6 +1,6 @@
 package com.somosicev.locadora.model;
 
-public class Cliente {
+public abstract class Cliente {
     
     private Long id;
     private String nome;
